@@ -1,0 +1,542 @@
+{
+  "name": "CV-maker",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "={{ $json['Job URL'] }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1260,
+        240
+      ],
+      "id": "b523e8f5-1ad4-4d4f-b553-e89ee29d566e",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "cssSelector": "body"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -1100,
+        240
+      ],
+      "id": "909459d1-5a58-44e6-971b-e6326df24bc6",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "resource": "assistant",
+        "operation": "create",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4",
+          "mode": "list",
+          "cachedResultName": "GPT-4"
+        },
+        "name": "Job anlyzer",
+        "instructions": "=Analyze the following job posting text and extract these sections if available: \n1) Job Title \n2) Responsibilities \n3) Requirements \n4) Skills \n5) Company Description\n\nJob Posting Text:\n\n{{ $json[''] }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -1640,
+        -400
+      ],
+      "id": "56bef705-1074-4e18-a375-715bc59a6270",
+      "name": "Create an assistant",
+      "alwaysOutputData": false,
+      "credentials": {
+        "openAiApi": {
+          "id": "x8miNkiHNpiqlIT4",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "assistant",
+        "assistantId": {
+          "__rl": true,
+          "value": "asst_BmRXLr4C2s0vLIGxH7yPuHWf",
+          "mode": "list",
+          "cachedResultName": "Job anlyzer"
+        },
+        "prompt": "define",
+        "text": "=Analyze the following job posting text and extract:\n1. Job Title\n2. Responsibilities\n3. Requirements\n4. Skills\n5. Company Description\n\nJob description:\n{{ $('Notion Trigger').item.json['Job description'] }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -1480,
+        -400
+      ],
+      "id": "44adbfc2-2481-44c5-87b2-68d5e8d19d0f",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "x8miNkiHNpiqlIT4",
+          "name": "OpenAi account"
+        }
+      },
+      "notes": "Extracting keywords"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "679ad7b6-f0a9-4d54-b978-20553803addb",
+              "name": "resume_text",
+              "value": "SUMMARY Professional with a diverse background in e-commerce, banking, data analysis, financial monitoring, organizing events, and community development. With my more than five years in the banking sector, I moved from Customer Service Consultant to Deputy Branch Manager, where I developed expertise in transactional analysis, risk assessment, fraud detection, and regulatory compliance. In addition, I have a decade of experience as an entrepreneur, having operated an online store for ten years, using financial analysis, SEO optimization, and data-driven decision-making to enhance profitability. I've been skilled in data visualization, reporting automation, and reconciliation using Excel, SQL, and Power BI. As an administrator and event organizer in a chess federation, I have effectively managed more than 100 large-scale events, proving my strong track record in event management and community engagement beyond finance and analytics. My voluntary work in community development, where I handled funding campaigns and infrastructure repair projects, communicating with politicians and mobilizing local communities, served as an example of the ability to manage initiatives and find money. A highly adaptable and detail-oriented professional, I thrive in dynamic environments, combining analytical skills, financial expertise, and stakeholder collaboration to drive process improvements and ensure compliance with industry regulations. Speak English (B2), Polish (B2), Ukrainian, and Russian. Operations and reporting professional with over 10 years of experience in finance and e-commerce, transitioning into Revenue Accounting. Eager to develop and grow within the field of Revenue Accounting. Highly skilled at optimizing workflows and delivering data-driven insights. Seeking to leverage analytical abilities and attention to detail in invoice validation, sales contract processing, and supporting month-end close tasks in a deadline-driven environment.  Highlights include: Organized 100+ high-profile events, coordinating logistics, budgeting, and stakeholder communication. Secured municipal funding for large-scale community projects, demonstrating strategic thinking and negotiation skills. Managed a profitable e-commerce business, leveraging analytics for optimization and growth. SKILLS Technical Proficiency: Python (Pandas, NumPy, Matplotlib, Seaborn), SQL, Power BI, MS Office (Excel, Word). Data Analysis: Data modeling, visualization, and automation of reporting processes. Web Development: JavaScript, HTML, CSS3, Nuxt3, Tailwind, REST API. Project Management: Event organization, budgeting, stakeholder communication, and team leadership. Soft Skills: Strong analytical and problem-solving skills, proficient in collaborating with multi-functional teams, adaptable to new technologies and fast-paced work environments, data-driven mindset, achievement-oriented, goal-focused, persistent and determined, attention to details, positive outlook, branch management, and team leadership. Languages: English (B2), Polish (B2), Ukrainian (Native), Russian (Native). Collaboration Tools: Agile Frameworks, Microsoft Teams, Slack, Zoom. Additional Skills: Community mobilization, customer service, and SEO optimization. EXPERIENCE Data Analyst | Front-End Developer  (Internship, Project-Based Experience): Women Who Code Kyiv Mentoring Program, Baza Trainee Ukraine, Kyiv \t\t\t\t\t\t\t03/2022 - 09/2023 Implemented projects using JavaScript, HTML, CSS3, Nuxt3, Tailwind, and the REST API. Developed over 5 projects: GitHub Designed and maintained complex data models to support reconciliation and internal reporting. Conducted deep data analysis to identify patterns and insights, enhancing operational efficiency. Automated report generation and developed dashboards for analysis using Power BI and SQL.  Publicly Funded Cultural Institution & Non-Profit Organization Supported by Major Local Enterprises | Dnipro, Ukraine 02/2020 – 09/2022 Operations & Project Coordinator Coordinated complex, multi-stakeholder projects and large-scale events, ensuring timely and efficient delivery under tight deadlines. Oversaw end-to-end project lifecycles, consistently achieving a 100% on-time completion rate while aligning objectives with strategic goals. Facilitated clear communication and task execution across teams, improving collaboration and outcomes. Prioritized and managed multiple responsibilities to ensure successful project completion within scope and budget. \tSuccessfully conducted over 100 events, including city and regional chess championships with 30-100 participants. Hosted a simultaneous exhibition on 20 boards and a lecture by the world champion, attracting 500 guests (Feb 9, 2020). Pioneered the first-ever chess quest for children’s teams in Dnipro, held in a park, creating a unique and engaging format. Launched Dnipro’s first outdoor chess tournaments, promoting chess accessibility to the public. Coordinated corporate chess tournaments for local businesses, fostering team collaboration and strategic thinking. Organized school team competitions, boosting grassroots-level chess participation.     Key Responsibilities: Collaborated with government authorities, media, and sponsors to ensure seamless event execution. Managed event operations, including budgeting, logistics, media coverage, and press releases. Built and nurtured relationships with stakeholders, expanding chess awareness across the community. E-commerce Business Owner, Ukraine 06/2010 - 07/2020| Dnipro, Ukraine E-commerce Operations & Reporting Specialist \t \t\t\t\t06/2010 - 07/2020 Designed, developed, and managed an e-commerce platform, ensuring stability and scalability for long-term growth. Implemented SEO strategies that secured a Google Top-20 ranking, boosting organic traffic and brand visibility. Utilized Google Analytics to conduct market research and analyze customer behavior, maintaining a 4-5% conversion rate. Optimized pricing strategies and product assortment based on data insights, driving sales growth and increasing profitability. Developed and executed targeted marketing campaigns using customer analytics, improving retention and engagement. Streamlined daily operations and logistics, enhancing efficiency and reducing operational bottlenecks. Developed independently, the software part of the online store organized its development from scratch to stable operation. Independently carried out SEO optimization, achieving a Google Top-20 ranking for search queries. A conversion rate of 2-3% was achieved. Utilized Google Analytics to analyze customer behavior, track website performance, and identify key areas for improvement. Leveraged insights from Google Analytics to optimize the product assortment, adjust pricing strategies, and create targeted marketing campaigns, resulting in increased sales and customer retention. Developed data-driven approaches to optimize product offerings and maximize profitability. \"PrivatBank\" commercial bank, Ukraine 12/2005 - 06/2010 Branch Manager | Financial & Operations Reporting Analyzed sales performance metrics and developed customer segmentation models based on transaction data to optimize revenue strategies for premium banking products. Supervised and analyzed team performance, adjusting strategies to improve efficiency and meet KPIs. Maintained confidentiality and handling sensitive financial information Conducted financial and operational risk assessments, pinpointing key areas for process improvement through quantitative analysis. Led training programs, enhancing the team's analytical capabilities and decision-making skills. Designed and optimized internal workflows based on process data analysis, driving significant improvements in operational efficiency. Supported day-to-day finance and accounting processes Career progression and responsibilities: Deputy Head of Group A Branch,  Lead Sales Manager for the GOLD Club \t\t\t\t\t05/2009 – 06/2010 Organized and managed sales processes for premium banking products for VIP clients. Contributed to the development of loyalty programs for the GOLD Club members. Led the team, developed sales strategies, and attracted key clients. Ensured high standards of service for the premium customer segment. Achievements: Consistently achieved and exceeded sales targets. Expanded the branch’s client base through exceptional service and effective communication. Introduced improvements to service processes, leading to increased customer satisfaction Head of Group B Branch, Lead Manager \t\t\t\t\t01/2009 – 05/2009 Managed an independent bank branch, including operational and strategic planning. Ensured the achievement of sales targets for banking products and services. Supervised the work of 4 employees, motivating the team and monitoring performance. Collaborated with local partners and clients to expand the customer base. Head of Personal Client Service Center \t\t\t\t\t10/2008 – 01/2009 Managed the operational activities of the personal client service center. Monitored the achievement of key performance indicators (KPIs). Developed and implemented measures to improve service quality. Established long-term relationships with key clients. Lead Manager, Personal Client Service Center \t\t\t\t03/2008 – 10/2008 Supervised the department serving VIP clients. Provided individual consultations on premium bank products. Coordinated the work of a team of managers to ensure sales targets were met. Developed strategies to increase client loyalty and attract new customers. Senior Specialist, Training and Development Department\t\t11/2007 – 03/2008 Organized and delivered training sessions on sales, products, and customer service standards. Created training materials and programs for staff professional development. Evaluated the effectiveness of training and implemented new approaches to employee development.  Senior Manager, Quality Control Department \t\t\t\t07/2006 – 11/2007 Conducted quality checks of customer service processes. Analyzed customer complaints and suggestions to improve procedures. Developed recommendations to enhance the quality of banking services. Trained employees on customer interaction standards and service quality. Customer Service Consultant \t\t\t\t\t\t12/2005 – 07/2006 Provided consultations on bank products and services to clients. Resolved issues related to accounts, cards, and payments. Ensured a high level of customer service. Managed documentation and adhered to customer service standards. EDUCATION Dnipro University of Technology\t\t\t\t\t\t 2001 - 2007 Postgraduate Diploma (Master's-level Degree) (2007) in Automation and Computer-Integrated Technologies. Bachelor's Degree (2005) COURSES Data Analysis with Python (2024) Databases and SQL for Data Science (2024) Data Analysis and Visualization with Power BI (2024) Python for Data Science, AI & Development (2025) VOLUNTEER EXPERIENCE Communications Coordinator  Community Development & Public Funding\t\t\t\t01/2019 – 12/2020 Played a key role in a successful public funding campaign for a large residential complex (400 apartments, 1,200+ residents) through the Municipal Participatory Budget Program. Responsibilities: Lead a communication strategy and community engagement efforts for 1,200+ residents. Organized and conducted a signature collection campaign across 400 residential units. Provided residents with guidance on electronic document submission and voting procedures. Conducted a door-to-door advocacy campaign to educate residents on project benefits. Impact: Secured 400,000 UAH in municipal funding for residential improvements. Demonstrated effective large-scale community mobilization. Built strong relationships with local government officials, fostering future collaboration. Project Leader Kindergarten Development Initiatives \t\t\t\t\t01/2019 – 12/2020 Led efforts to secure public funding for infrastructure improvements at a kindergarten serving 160 children through multiple channels. Municipal participatory budget projects: Developed two detailed project proposals, ensuring compliance with government regulations. Conducted safety verification of materials and equipment and performed supplier due diligence and price analysis. Created comprehensive budgets and implementation plans. Led signature collection campaigns and community engagement efforts to gain resident support. City Council Deputy Fund Initiative: Pivoted strategy after insufficient votes in the participatory budget process, successfully securing alternative funding through the City Council Deputy Fund. Built strategic relationships with City Council deputies to advocate for funding allocation. Managed project implementation, including quality control and coordination with contractors. Key Competencies Demonstrated: Project Development: Created comprehensive proposals aligned with regulatory requirements. Safety Compliance: Ensured materials and equipment met children’s safety standards. Strategic Thinking: Successfully transitioned from participatory budget to deputy fund strategy. Stakeholder management: coordinated between government officials, contractors, and school administration. Impact: Improved educational infrastructure for 160 children through: Roof renovation enhances building safety. Comprehensive interior space upgrades. Installation of new furniture. Established a framework for future facility improvements and collaboration.",
+              "type": "string"
+            },
+            {
+              "id": "605f1660-c8b6-4e06-afc9-1098b268074f",
+              "name": "job_description",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1140,
+        -400
+      ],
+      "id": "84ee2079-8e97-4816-8667-9f690e3dda10",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "assistant",
+        "assistantId": {
+          "__rl": true,
+          "value": "asst_H2T0qPEhDIlTfw5OAdkNRLz6",
+          "mode": "list",
+          "cachedResultName": "Job anlyzer"
+        },
+        "prompt": "define",
+        "text": "=Compare the following resume with the job description and provide recommendations for improving the resume to better match the job.\n\nStart your response with an approximate percentage match between the resume and the job description.\n\nThen list:\n1. What is missing in the resume\n2. What is well aligned\n3. Suggestions for improvement\n\nAt the end of your response, output the following JSON object on a new line:\n\n{\n  \"matchPercentage\": <insert the numeric match percentage here (0-100) in number format>\n}\n\nResume:\n{{ $json.resume_text }}\n\nJob Description:\n{{ $json.job_description }}\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -960,
+        -400
+      ],
+      "id": "17d46e93-cb03-4cdc-808b-dd90d9c1a55d",
+      "name": "Message a model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "x8miNkiHNpiqlIT4",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "event": "pagedUpdatedInDatabase",
+        "databaseId": {
+          "__rl": true,
+          "value": "21f03ce7-833e-80d9-b5ea-f7223e2b5b34",
+          "mode": "list",
+          "cachedResultName": "Job Analysis Requests",
+          "cachedResultUrl": "https://www.notion.so/21f03ce7833e80d9b5eaf7223e2b5b34"
+        },
+        "simple": "={{ true }}"
+      },
+      "type": "n8n-nodes-base.notionTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1980,
+        -400
+      ],
+      "id": "de88b729-d3c3-43ec-8ebc-0ce24e5121fa",
+      "name": "Notion Trigger",
+      "credentials": {
+        "notionApi": {
+          "id": "BfTouaajguh8ID8l",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Notion Trigger').item.json.id }}",
+          "mode": "id"
+        },
+        "simple": "={{ true }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "URL CV |rich_text",
+              "textContent": "=https://docs.google.com/document/d/{{ $json.id }}"
+            },
+            {
+              "key": "Analysis Result|rich_text",
+              "textContent": "={{ $('Edit Fields1').item.json.Analysis }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        100,
+        80
+      ],
+      "id": "ee81e3bb-e496-40e2-bc1c-08dd15a771a6",
+      "name": "Update a database page",
+      "credentials": {
+        "notionApi": {
+          "id": "BfTouaajguh8ID8l",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $json[\"output\"]; // текст, полученный от ассистента\n\nif (typeof input !== \"string\") {\n  throw new Error(\"Input is not a string\");\n}\n\n// Ищем процент соответствия (например, \"85%\" или просто \"85\")\nconst matchResult = input.match(/\\d{1,3}(?=%)/); // ищем число перед символом %\n\nif (!matchResult) {\n  throw new Error(\"No percentage found in the input\");\n}\n\nconst percentage = parseInt(matchResult[0], 10); // преобразуем строку в число\n\n// Удаляем процент из текста\nconst remainingText = input.replace(/\\d{1,3}%/, \"\").trim();\n\nreturn [{\n  percentage,\n  remainingText\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1040,
+        -120
+      ],
+      "id": "4802db3b-04b9-40fd-8238-4e9d478fae43",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c970fea2-62cb-446a-b9c3-c1b7484af7a5",
+              "name": "Compatibility",
+              "value": "={{ $('Code').item.json.percentage }}",
+              "type": "string"
+            },
+            {
+              "id": "3adcb45c-1ff4-4f79-973f-a0f813ebdc27",
+              "name": "Analysis",
+              "value": "={{ $('Code').item.json.remainingText }}",
+              "type": "string"
+            },
+            {
+              "id": "a2d70fdb-0a09-4dae-b285-a0a5f89315a0",
+              "name": "CV",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -460,
+        -120
+      ],
+      "id": "f2b41abf-a6ef-45ea-a4f8-61b7ea303d00",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2d230193-a77a-434d-aa12-b1c79cc06b74",
+              "leftValue": "={{ $json.percentage }}",
+              "rightValue": 70,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "cb0726fb-f85f-4be8-a9ca-4e7c6083584a",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1480,
+        240
+      ],
+      "id": "37222f61-02c5-4fdc-bf0d-e617b33abb9e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "resource": "assistant",
+        "assistantId": {
+          "__rl": true,
+          "value": "asst_8hNEyRIjrzH0SRuHFxXYCvfh",
+          "mode": "list",
+          "cachedResultName": "Job anlyzer"
+        },
+        "prompt": "define",
+        "text": "=You are an experienced HR professional helping a client rewrite their resume to exactly match a specific job description.\n\nYour goal is to optimize the resume so it passes Applicant Tracking Systems (ATS) by using keywords and key phrases from the job description.\n\nInstructions:\n\nDo not invent or add any experience that the client didn’t have.\n\nRephrase, summarize, or combine existing experience from the original resume to better align with the job description.\n\nYou may rename job titles to match the terminology used in the job description, as long as the responsibilities stay accurate.\n\nAdjust the Summary section to emphasize how the candidate matches this specific job. Use keywords and language from the job posting.\n\nEnsure the final resume looks natural, professional, and fully tailored to the job description.\n\nInput:\n\nThe original resume content {{ $('Edit Fields').item.json.resume_text }} .\n\nThe job description {{ $('Edit Fields').item.json.job_description }}.\n\nOutput:\nA fully rewritten, ATS-optimized resume, including a customized Summary section, that matches the job description and uses only the experience provided in the original resume. ",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -840,
+        -120
+      ],
+      "id": "32c89e46-b979-4082-9ad7-e279827cf48a",
+      "name": "Message a model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "x8miNkiHNpiqlIT4",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "folderId": "1JpRGD1pm0rhsFirwG7XnDWOvexrGKIOs",
+        "title": "CV"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        -200,
+        -120
+      ],
+      "id": "bbac75a6-590e-40b4-ab74-916500eb3030",
+      "name": "Create a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "LP6qI8BCk2YZWX47",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $('Edit Fields1').item.json.CV }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        100,
+        -120
+      ],
+      "id": "714917f9-738f-47f7-9789-2bfb2f1cf96f",
+      "name": "Update a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "LP6qI8BCk2YZWX47",
+          "name": "Google Docs account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        []
+      ]
+    },
+    "Create an assistant": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Message a model1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion Trigger": {
+      "main": [
+        [
+          {
+            "node": "Create an assistant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Message a model2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Create a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        []
+      ]
+    },
+    "Message a model2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a document": {
+      "main": [
+        [
+          {
+            "node": "Update a document",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update a database page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "55bdaf6e-75eb-4543-a66b-875c3e40749a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b7ed11799c0e408b6aea484f97fe5886f1cd49eb029469bde9b65699afeba70c"
+  },
+  "id": "NTSUFYmcyBbh5qoR",
+  "tags": []
+}
