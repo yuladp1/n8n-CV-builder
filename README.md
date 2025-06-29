@@ -2,6 +2,8 @@
 
 This project is a low-code automation workflow built with [n8n](https://n8n.io/), integrated with OpenAI's ChatGPT, Notion, and Google Docs. It helps automate the process of matching job descriptions with resumes and generating improved resume suggestions.
 
+![Workflow screenshot](N8N%20screen.png)
+
 ## Features
 
 - Compares job descriptions with your resume using ChatGPT
